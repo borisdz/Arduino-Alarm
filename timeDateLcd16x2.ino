@@ -8,11 +8,11 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 int contrast = 75;
 //--------RTC settings:--------//
 RTC_DS1307 RTC;
-int hourupg;
-int minupg;
-int yearupg;
-int monthupg;
-int dayupg;
+int hour_update;
+int min_update;
+int year_update;
+int month_update;
+int day_update;
 
 //--------App settings:--------//
 int menu = 0;
@@ -32,7 +32,7 @@ void setup()
 {
   lcd.begin(16, 2);
   analogWrite(6,contrast);
-  pinMode(P1,INPUT_PULLUP); // https://www.arduino.cc/en/Tutorial/InputPullupSerial
+  pinMode(P1,INPUT_PULLUP); 
   pinMode(P2,INPUT_PULLUP);
   pinMode(P3,INPUT_PULLUP);
   pinMode(P4,INPUT_PULLUP);
@@ -47,8 +47,7 @@ void setup()
     // Set the date and time at compile time
     RTC.adjust(DateTime(__DATE__, __TIME__));
   }
-  // RTC.adjust(DateTime(__DATE__, __TIME__)); //removing "//" to adjust the time
-    // The default display shows the date and time
+  
   int menu=0;
 }
  
@@ -108,14 +107,14 @@ void DisplayDateTime (){
     lcd.print("0");
   }
   lcd.print(now.hour(), DEC);
-  hourupg=now.hour();
+  hour_update=now.hour();
   lcd.print(":");
   if (now.minute()<=9)
   {
     lcd.print("0");
   }
   lcd.print(now.minute(), DEC);
-  minupg=now.minute();
+  min_update=now.minute();
   lcd.print(":");
   if (now.second()<=9)
   {
@@ -130,17 +129,17 @@ void DisplayDateTime (){
     lcd.print("0");
   }
   lcd.print(now.day(), DEC);
-  dayupg=now.day();
+  day_update=now.day();
   lcd.print("/");
   if (now.month()<=9)
   {
     lcd.print("0");
   }
   lcd.print(now.month(), DEC);
-  monthupg=now.month();
+  month_update=now.month();
   lcd.print("/");
   lcd.print(now.year(), DEC);
-  yearupg=now.year();
+  year_update=now.year();
 }
 
 void DisplaySetHour(){
@@ -148,30 +147,30 @@ void DisplaySetHour(){
   DateTime now = RTC.now();
   if(digitalRead(P2)==LOW)
   {
-    if(hourupg==23)
+    if(hour_update==23)
     {
-      hourupg=0;
+      hour_update=0;
     }
     else
     {
-      hourupg=hourupg+1;
+      hour_update=hour_update+1;
     }
   }
    if(digitalRead(P3)==LOW)
   {
-    if(hourupg==0)
+    if(hour_update==0)
     {
-      hourupg=23;
+      hour_update=23;
     }
     else
     {
-      hourupg=hourupg-1;
+      hour_update=hour_update-1;
     }
   }
   lcd.setCursor(0,0);
   lcd.print("Set time:");
   lcd.setCursor(0,1);
-  lcd.print(hourupg,DEC);
+  lcd.print(hour_update,DEC);
   delay(200);
 }
 
@@ -179,30 +178,30 @@ void DisplaySetMinute(){
   lcd.clear();
   if(digitalRead(P2)==LOW)
   {
-    if (minupg==59)
+    if (min_update==59)
     {
-      minupg=0;
+      min_update=0;
     }
     else
     {
-      minupg=minupg+1;
+      min_update=min_update+1;
     }
   }
    if(digitalRead(P3)==LOW)
   {
-    if (minupg==0)
+    if (min_update==0)
     {
-      minupg=59;
+      min_update=59;
     }
     else
     {
-      minupg=minupg-1;
+      min_update=min_update-1;
     }
   }
   lcd.setCursor(0,0);
   lcd.print("Set Minutes:");
   lcd.setCursor(0,1);
-  lcd.print(minupg,DEC);
+  lcd.print(min_update,DEC);
   delay(200);
 }
   
@@ -210,16 +209,16 @@ void DisplaySetYear(){
   lcd.clear();
   if(digitalRead(P2)==LOW)
   {    
-    yearupg=yearupg+1;
+    year_update=year_update+1;
   }
    if(digitalRead(P3)==LOW)
   {
-    yearupg=yearupg-1;
+    year_update=year_update-1;
   }
   lcd.setCursor(0,0);
   lcd.print("Set Year:");
   lcd.setCursor(0,1);
-  lcd.print(yearupg,DEC);
+  lcd.print(year_update,DEC);
   delay(200);
 }
 
@@ -227,30 +226,30 @@ void DisplaySetMonth(){
   lcd.clear();
   if(digitalRead(P2)==LOW)
   {
-    if (monthupg==12)
+    if (month_update==12)
     {
-      monthupg=1;
+      month_update=1;
     }
     else
     {
-      monthupg=monthupg+1;
+      month_update=month_update+1;
     }
   }
    if(digitalRead(P3)==LOW)
   {
-    if (monthupg==1)
+    if (month_update==1)
     {
-      monthupg=12;
+      month_update=12;
     }
     else
     {
-      monthupg=monthupg-1;
+      month_update=month_update-1;
     }
   }
   lcd.setCursor(0,0);
   lcd.print("Set Month:");
   lcd.setCursor(0,1);
-  lcd.print(monthupg,DEC);
+  lcd.print(month_update,DEC);
   delay(200);
 }
 
@@ -258,30 +257,30 @@ void DisplaySetDay(){
   lcd.clear();
   if(digitalRead(P2)==LOW)
   {
-    if (dayupg==31)
+    if (day_update==31)
     {
-      dayupg=1;
+      day_update=1;
     }
     else
     {
-      dayupg=dayupg+1;
+      day_update=day_update+1;
     }
   }
    if(digitalRead(P3)==LOW)
   {
-    if (dayupg==1)
+    if (day_update==1)
     {
-      dayupg=31;
+      day_update=31;
     }
     else
     {
-      dayupg=dayupg-1;
+      day_update=day_update-1;
     }
   }
   lcd.setCursor(0,0);
   lcd.print("Set Day:");
   lcd.setCursor(0,1);
-  lcd.print(dayupg,DEC);
+  lcd.print(day_update,DEC);
   delay(200);
 }
 
@@ -291,7 +290,7 @@ void SaveVars(){
   lcd.print("SAVING IN");
   lcd.setCursor(0,1);
   lcd.print("PROGRESS");
-  RTC.adjust(DateTime(yearupg,monthupg,dayupg,hourupg,minupg,0));
+  RTC.adjust(DateTime(year_update,month_update,day_update,hour_update,min_update,0));
   delay(200);
 }
 
@@ -395,7 +394,9 @@ void Alarm(){
      if ( now.hour() == alarmHours && now.minute() == alarmMinutes )
         {
          DateTime now = RTC.now();
-         playSong(); //play the note "F6" (FA5)
+         tone(buzzer,50);
+         //if(digitalRead(P4)==LOW)
+           //noTone(buzzer);
         }
     else{
          noTone (buzzer);
